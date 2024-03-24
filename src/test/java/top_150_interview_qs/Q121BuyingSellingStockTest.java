@@ -1,5 +1,6 @@
 package top_150_interview_qs;
 
+import lombok.extern.java.Log;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -11,6 +12,8 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
+@Log
 public class Q121BuyingSellingStockTest {
 //    Question:
 //    You are given an array prices where prices[i] is the price of a given stock on the ith day.
@@ -21,6 +24,36 @@ public class Q121BuyingSellingStockTest {
 
     private static final String priceAbsoluteFilePathStr = "/Users/legoman/code/leetcode/interview_prep/src/test/resources/prices.txt";
     private static final Path priceFilePath = Paths.get(priceAbsoluteFilePathStr);
+
+// LeetCode Test Time: 2ms, Memory usage: 61.60MB
+    public int maxProfitSimple(int[] prices) {
+
+        int maxProfit = 0;
+        int minPrice = prices[0];
+
+        for (int i = 1; i < prices.length; i++) {
+            minPrice = Math.min(minPrice, prices[i]);
+            maxProfit = Math.max(prices[i]-minPrice, maxProfit);
+        }
+        return maxProfit;
+    }
+// LeetCode Test Time: 2ms, Memory usage: 61.60MB
+    public int maxProfitSimpleWithIfs(int[] prices) {
+
+        int maxProfit = 0;
+        int minPrice = prices[0];
+
+        for (int i = 1; i < prices.length; i++) {
+            if(prices[i] < minPrice) {
+                minPrice = prices[i];
+            }
+
+            if(maxProfit < (prices[i] - minPrice)) {
+                maxProfit = prices[i] - minPrice;
+            }
+        }
+        return maxProfit;
+    }
 
     public int maxProfitWithDaysRecorded(int[] prices) {
         int[] best = new int[3];
@@ -98,12 +131,35 @@ public class Q121BuyingSellingStockTest {
 //      7<1 x, 7<5 x, 7<3 x, 7<6 x, 7<4 x >> i++
 //      1<5 y??
 
+
+//    Doesn't work - incorrect figures for small example array
+//    returns incorrect maxDiff
+    public int maxProfitWithLoopToDetectHigherPrice(int[] prices) {
+        int bestDiff = 0;
+        outerLoop:
+        for (int i = 0; i < prices.length-1; i++) {
+            for (int j = i+1; j < prices.length; j++) {
+                if((prices[j] - prices[i]) > bestDiff) {
+                    bestDiff = prices[j] - prices[i];
+                    // no higher price to sell
+                    for(int k = j; k < prices.length; k++) {
+                        if(prices[j] < prices[k]) {
+                            break outerLoop;
+                        }
+                    }
+                }
+            }
+        }
+        return bestDiff;
+    }
+
+
     @Test
     void maxProfitsExampleOneTest() {
         int[] prices = {7,1,5,3,6,4};
         int expected = 5;
 
-        int actual = maxProfitIfConditionSimplified(prices);
+        int actual = maxProfitSimple(prices);
         assertEquals(expected, actual);
     }
 
@@ -112,7 +168,7 @@ public class Q121BuyingSellingStockTest {
         int[] prices = {7,6,4,3,1};
         int expected = 0;
 
-        int actual = maxProfitIfConditionSimplified(prices);
+        int actual = maxProfitSimple(prices);
         assertEquals(expected, actual);
     }
 
@@ -121,7 +177,7 @@ public class Q121BuyingSellingStockTest {
         int[] fetchedPrices = readPriceFileBetter();
         int expected = 999;
 
-        int actual = maxProfitIfConditionSimplified(fetchedPrices);
+        int actual = maxProfitSimple(fetchedPrices);
         System.out.println("Actual: " + actual);
         assertEquals(expected, actual);
     }
@@ -142,5 +198,29 @@ public class Q121BuyingSellingStockTest {
         try(Stream<String> priceStream = Files.lines(priceFilePath)) {
             return priceStream.mapToInt(Integer::parseInt).toArray();
         }
+    }
+
+
+    @Test
+    public void testHarness() throws IOException {
+        long startTime, endTime, duration, avg;
+        long noOfRuns = 100000;
+
+        int[] fetchedPrices = readPriceFileBetter();
+
+        startTime = System.nanoTime();
+
+        for (int i = 0; i < noOfRuns; i++) {
+            maxProfitSimple(fetchedPrices);       // 60359 nanoseconds
+//            maxProfitSimpleWithIfs(fetchedPrices); // 29294 nanoseconds
+        }
+        endTime = System.nanoTime();
+        duration = (endTime - startTime);
+        log.info("startTime: " + startTime);
+        log.info("endTime: "+ endTime);
+        log.info("duration: "+ duration);
+        log.info("noOfRuns: "+ noOfRuns);
+        avg = duration/noOfRuns;
+        log.info("Average test duration across " + noOfRuns + " iterations: " + avg + " nanoseconds");
     }
 }

@@ -59,7 +59,7 @@ public class Q169MajorityElementTest {
         return 0;
     }
 
-// Sorting an array takes - O(n log n) time
+// Sorting an array takes - O(n log n) time - SLOW
     public int majorityElementBySorting(int[] nums) {
         Arrays.sort(nums);
         int n = nums.length;
@@ -72,13 +72,13 @@ public class Q169MajorityElementTest {
         int count = 0;
         int candidate = 0;
 
-        for (int i = 0; i < nums.length; i++) {
-            if(count==0) {
-                candidate = nums[i];
+        for (int num : nums) {
+            if (count == 0) {
+                candidate = num;
                 count++;
             }
 
-            if(candidate == nums[i]) {
+            if (candidate == num) {
                 count++;
             } else {
                 count--;
@@ -87,7 +87,7 @@ public class Q169MajorityElementTest {
         return candidate;
     }
 
-
+// Multiple parameters for test methods
     private static Stream<Arguments> inputsAndResults() {
         return Stream.of(
                 Arguments.of(new int[]{3, 2, 3}, 3),
@@ -111,7 +111,6 @@ public class Q169MajorityElementTest {
         int actual = majorityElementMoore(nums);
         assertEquals(expectedMajorityElem, actual);
     }
-
 
     @Test
     public void testHarness() {

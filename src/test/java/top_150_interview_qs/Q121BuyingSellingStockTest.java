@@ -4,16 +4,19 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Q121BuyingSellingStockTest {
-    int[] prices = {983,341,957,541,470,660,118,742,334,822,165,145,730,656,567,25,684,113,351,295,468,918,587,4,399,220,11,222,777,127,135,688,267,570,342,748,382,428,340,35,896,846,376,655,147,891,198,420,729,685,989,543,285,822,254,878,380,758,490,73,870,328,234,489,990,387,688,12,795,746,275,371,321,298,186,925,845,816,775,647,379,15,602,756,619,256,106,312,965,661,973,147,437,796,56,955,846,245,502,889,557,281,936,812,880,880,834,186,303,96,706};
 
-
+    private static final String priceAbsoluteFilePathStr = "/Users/legoman/code/leetcode/interview_prep/src/test/resources/prices.txt";
+    private static final Path priceFilePath = Paths.get(priceAbsoluteFilePathStr);
+//    Question:
 //    You are given an array prices where prices[i] is the price of a given stock on the ith day.
 //    You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
 //    Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
@@ -41,7 +44,7 @@ public class Q121BuyingSellingStockTest {
     }
 
     // This is very readable:
-    public int maxProfitWithDeltaVariable(int[] prices) {
+    public int maxProfitWithDiffVariable(int[] prices) {
         int bestDiff = 0;
         int diff;
         for (int i = 0; i < prices.length-1; i++) {
@@ -57,7 +60,7 @@ public class Q121BuyingSellingStockTest {
         return bestDiff;
     }
 
-    public int maxProfitIfStatementsMerged(int[] prices) {
+    public int maxProfitWithIfStatementsMerged(int[] prices) {
         int bestDiff = 0;
         for (int i = 0; i < prices.length-1; i++) {
             for (int j = i+1; j < prices.length; j++) {
@@ -123,14 +126,9 @@ public class Q121BuyingSellingStockTest {
         assertEquals(expected, actual);
     }
 
-//    @Test
-//    void readPriceFileTest() throws IOException {
-//        readPriceFile();
-//    }
-
     public int[] readPriceFile() throws IOException {
 
-        List<String> lines = Files.readAllLines(Paths.get("/Users/legoman/code/leetcode/interview_prep/src/test/resources/prices.txt"));
+        List<String> lines = Files.readAllLines(Paths.get(priceAbsoluteFilePathStr));
         String[] priceStrs = lines.get(0).split(",");
         int[] prices = new int[priceStrs.length];
 
@@ -141,8 +139,8 @@ public class Q121BuyingSellingStockTest {
     }
 
     public int[] readPriceFileBetter() throws IOException {
-        return Files.lines(
-                Paths.get("/Users/legoman/code/leetcode/interview_prep/src/test/resources/prices.txt"))
-                .mapToInt(Integer::parseInt).toArray();
+        try(Stream<String> priceStream = Files.lines(priceFilePath)) {
+            return priceStream.mapToInt(Integer::parseInt).toArray();
+        }
     }
 }

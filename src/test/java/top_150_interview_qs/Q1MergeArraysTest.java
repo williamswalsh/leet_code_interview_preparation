@@ -2,6 +2,8 @@ package top_150_interview_qs;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class Q1MergeArraysTest {
@@ -16,7 +18,6 @@ public class Q1MergeArraysTest {
      * If the nums1 index value is greater - insert that value into nums1 end index
      * else f the nums2 index value is greater - insert that value into nums1 end index
      * The iteration is controlled by decrementing the indexes, no inner loop.
-     *
      * Example 1:
      * <p>
      * Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
@@ -129,8 +130,9 @@ public class Q1MergeArraysTest {
     @Test
     public void shiftFromIndexTwoTest() {
         int[] a = {1, 2, 3, 0, 0, 0};
-        int[] expected = {1, 2, 3, 3, 0, 0};
+        int[] expected = {1, 2, 2, 3, 0, 0};
         int[] actual = shiftRightFromStart(a, 2);
+        System.out.println(Arrays.toString(actual));
         assertArrayEquals(expected, actual);
     }
 

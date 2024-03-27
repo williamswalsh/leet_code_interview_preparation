@@ -216,11 +216,11 @@ public class Q121BuyingSellingStockTest {
         }
         endTime = System.nanoTime();
         duration = (endTime - startTime);
-        log.info("startTime: " + startTime);
-        log.info("endTime: "+ endTime);
-        log.info("duration: "+ duration);
-        log.info("noOfRuns: "+ noOfRuns);
+        System.out.println("startTime: " + startTime);
+        System.out.println("endTime: "+ endTime);
+        System.out.println("duration: "+ duration);
+        System.out.println("noOfRuns: "+ noOfRuns);
         avg = duration/noOfRuns;
-        log.info("Average test duration across " + noOfRuns + " iterations: " + avg + " nanoseconds");
+        System.out.println("Average test duration across " + noOfRuns + " iterations: " + avg + " nanoseconds");
     }
 }

@@ -1,6 +1,5 @@
 package top_150_interview_qs;
 
-import lombok.extern.java.Log;
 import org.junit.jupiter.api.Test;
 
 import java.util.regex.Pattern;
@@ -9,7 +8,6 @@ import static java.lang.Character.isLetterOrDigit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-@Log
 public class Q125ValidPalindromeTest {
     /**
      * A phrase is a palindrome if
@@ -20,7 +18,6 @@ public class Q125ValidPalindromeTest {
      * Alphanumeric characters include letters and numbers.
      * Given a string s, return true if it is a palindrome, or false otherwise.
      */
-
     private static final Pattern validCharsPattern = Pattern.compile("[A-Za-z0-9]");
 
     private boolean isInvalid(char c) {

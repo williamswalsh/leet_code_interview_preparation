@@ -24,26 +24,97 @@ public class Q125ValidPalindromeTest {
     private static final Pattern validCharsPattern = Pattern.compile("[A-Za-z0-9]");
 
     private boolean isInvalid(char c) {
-//        FAST!
+        //        FAST!
         return !Character.isLetterOrDigit(c);
 
-//        This is SLOW!
-//        return !validCharsPattern.matcher(String.valueOf(c)).find();
+        //        This is SLOW!
+        //        return !validCharsPattern.matcher(String.valueOf(c)).find();
     }
 
     /**
+     * <pre>
      * This is the fastest implementation.
      * Leetcode:
-     * - 3ms - beats 75%
-     * - 43.01MB - beats 62.66%
+     * - 2ms        - beats 99%
+     * - 42.88MB    - beats 73.99%
+     *
+     * Removed case for empty String.
+     * </pre>
+     */
+    public boolean isPalindrome(String s) {
+        char[] target = s.toCharArray();
+        int i = 0;
+        int j = target.length - 1;
+
+        while (i < j) {
+            if (!isLetterOrDigit(target[i])) {
+                i++;
+            } else if (!isLetterOrDigit(target[j])) {
+                j--;
+            } else {
+                if(Character.toLowerCase(target[i]) != Character.toLowerCase(target[j])) {
+                    return false;
+                }
+                i++;
+                j--;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * <pre>
+     * This is the 2nd fastest implementation.
+     * Leetcode:
+     * - 2ms        - beats 99%
+     * - 43.14MB    - beats 58.93%
+     *
+     * Added case for empty String.
+     * Reordered if statements using venn-diagram
+     * if i is invalid >> i++
+     * if j is invalid >> j++
+     * otherwise i + j are valid >> compare them
+     * </pre>
+     */
+    public boolean isPalindrome2ndFastest(String s) {
+        if (s.isEmpty()) {
+            return true;
+        }
+        char[] target = s.toCharArray();
+        int i = 0;
+        int j = target.length - 1;
+
+        while (i < j) {
+            if (!isLetterOrDigit(target[i])) {
+                i++;
+            } else if (!isLetterOrDigit(target[j])) {
+                j--;
+            } else {
+                if(Character.toLowerCase(target[i]) != Character.toLowerCase(target[j])) {
+                    return false;
+                }
+                i++;
+                j--;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * <pre>
+     * This is the 3rd fastest implementation.
+     * Leetcode:
+     *   - 3ms      - beats 75%
+     *   - 43.01MB  - beats 62.66%
      *
      * 4ms if method is called.
      * 3ms if code is inlined.
      *
      * Inlined the char valid check
      * Using isLetterOrDigit Character Standard Library static method.
+     * </pre>
      */
-    public boolean isPalindrome(String s) {
+    public boolean isPalindrome3rdFastest(String s) {
         char[] target = s.toLowerCase().toCharArray();
         int i = 0;
         int j = target.length - 1;
@@ -71,9 +142,9 @@ public class Q125ValidPalindromeTest {
         return true;
     }
 
-/**
- * Leetcode: 22ms, 45.40MB
- */
+    /**
+     * Leetcode: 22ms, 45.40MB
+     */
     public boolean isPalindromeFastWithMethodCall(String s) {
         char[] target = s.toLowerCase().toCharArray();
         int i = 0;
@@ -102,12 +173,12 @@ public class Q125ValidPalindromeTest {
         return true;
     }
 
-
-
 /**
+ * <pre>
  * Leetcode: 4ms, 44.57MB
  * Faster than slow version.
  * Less memory usage than slow version.
+ * </pre>
 */
     public boolean isPalindromeUsingStringMethods(String s) {
         char[] c = s.replaceAll("[^A-Za-z0-9]", "").toLowerCase().toCharArray();

@@ -11,7 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * <pre>
  * Given two strings ransomNote and magazine,
- * - return true if ransomNote can be constructed by using the letters from magazine and false otherwise.
+ * - return true if ransomNote can be constructed by using the letters from magazine
+ * - false otherwise.
  * Each letter in magazine can only be used once in ransomNote.
  *
  * Constraints:
@@ -21,15 +22,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class Q383RansomNoteTest {
 
-
     /**
      * <pre>
-     * This is my 2nd fastest implementation.
-     *      * Leetcode:
-     *      * - 18ms       - beats 15.24% of users with Java
-     *      * - 44.85MB    - beats 53.63%
-     *      * </pre>
-     *
+     * This is my 3rd fastest implementation.
+     * Leetcode:
+     * - 18ms       - beats 15.24% of users with Java
+     * - 44.85MB    - beats 53.63%
+     * </pre>
      */
     public boolean canConstruct(String ransomNote, String magazine) {
         Map<Character, Integer> charMap = new HashMap<>();
@@ -54,12 +53,36 @@ public class Q383RansomNoteTest {
 
     /**
      * <pre>
+     * This is my 2nd fastest implementation.
+     * Leetcode:
+     * - 15ms       - beats 26.28% of users with Java
+     * - 46.06MB    - beats 46.06%
+     * </pre>
+     */
+    public boolean canConstructWithGetOrDefault(String ransomNote, String magazine) {
+        Map<Character, Integer> charMap = new HashMap<>();
+
+        for (char c: magazine.toCharArray()) {
+            charMap.put(c, charMap.getOrDefault(c, 0) + 1);
+        }
+
+        for (char c: ransomNote.toCharArray()) {
+            if (charMap.containsKey(c) && charMap.get(c) > 0) {
+                charMap.put(c, charMap.get(c) - 1);
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * <pre>
      * This is my fastest implementation.
-     *      * Leetcode:
-     *      * - 14ms       - beats 32.06% of users with Java
-     *      * - 45.27MB    - beats 17.21%
-     *      * </pre>
-     *
+     * Leetcode:
+     * - 14ms       - beats 32.06% of users with Java
+     * - 45.27MB    - beats 17.21%
+     * </pre>
      */
     public boolean canConstructWithJava8MapMethods(String ransomNote, String magazine) {
         Map<Character, Integer> charMap = new HashMap<>();

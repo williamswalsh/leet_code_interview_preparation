@@ -2,6 +2,7 @@ package top_150_interview_qs;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,13 +25,37 @@ public class Q383RansomNoteTest {
 
     /**
      * <pre>
+     * This is my fastest implementation.
+     * The idea for using an integer array for alphabetCount is from a solution on Leetcode.
+     * Leetcode:
+     * - 1ms        - beats 99.20% of users with Java
+     * - 44.62MB    - beats 66.79% of users with Java
+     * </pre>
+     */
+    public boolean canConstruct(String ransomNote, String magazine) {
+        int[] alphabetCount = new int[26];
+
+        for (char c: magazine.toCharArray()) {
+            alphabetCount[c - 'a']++;
+        }
+        for (char c: ransomNote.toCharArray()) {
+            if(--alphabetCount[c - 'a'] < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * <pre>
      * This is my 3rd fastest implementation.
      * Leetcode:
      * - 18ms       - beats 15.24% of users with Java
      * - 44.85MB    - beats 53.63%
      * </pre>
      */
-    public boolean canConstruct(String ransomNote, String magazine) {
+    public boolean canConstructSlowest(String ransomNote, String magazine) {
         Map<Character, Integer> charMap = new HashMap<>();
 
         for (char c: magazine.toCharArray()) {

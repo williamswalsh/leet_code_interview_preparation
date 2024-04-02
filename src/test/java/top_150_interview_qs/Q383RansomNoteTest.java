@@ -2,7 +2,6 @@ package top_150_interview_qs;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +25,9 @@ public class Q383RansomNoteTest {
     /**
      * <pre>
      * This is my fastest implementation.
-     * The idea for using an integer array for alphabetCount is from a solution on Leetcode.
+     * The idea for using an integer array for alphabetCount is from a solution
+     * on Leetcode.
+     *
      * Leetcode:
      * - 1ms        - beats 99.20% of users with Java
      * - 44.62MB    - beats 66.79% of users with Java
@@ -35,11 +36,11 @@ public class Q383RansomNoteTest {
     public boolean canConstruct(String ransomNote, String magazine) {
         int[] alphabetCount = new int[26];
 
-        for (char c: magazine.toCharArray()) {
+        for (char c : magazine.toCharArray()) {
             alphabetCount[c - 'a']++;
         }
-        for (char c: ransomNote.toCharArray()) {
-            if(--alphabetCount[c - 'a'] < 0) {
+        for (char c : ransomNote.toCharArray()) {
+            if (--alphabetCount[c - 'a'] < 0) {
                 return false;
             }
         }
@@ -49,7 +50,7 @@ public class Q383RansomNoteTest {
 
     /**
      * <pre>
-     * This is my 3rd fastest implementation.
+     * This is my 4th fastest implementation.
      * Leetcode:
      * - 18ms       - beats 15.24% of users with Java
      * - 44.85MB    - beats 53.63%
@@ -58,15 +59,40 @@ public class Q383RansomNoteTest {
     public boolean canConstructSlowest(String ransomNote, String magazine) {
         Map<Character, Integer> charMap = new HashMap<>();
 
-        for (char c: magazine.toCharArray()) {
-            if(charMap.containsKey(c)) {
+        for (char c : magazine.toCharArray()) {
+            if (charMap.containsKey(c)) {
                 charMap.put(c, charMap.get(c) + 1);
             } else {
                 charMap.put(c, 1);
             }
         }
 
-        for (char c: ransomNote.toCharArray()) {
+        for (char c : ransomNote.toCharArray()) {
+            if (charMap.containsKey(c) && charMap.get(c) > 0) {
+                charMap.put(c, charMap.get(c) - 1);
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * <pre>
+     * This is my 3rd fastest implementation.
+     * Leetcode:
+     * - 15ms       - beats 26.28% of users with Java
+     * - 46.06MB    - beats 46.06%
+     * </pre>
+     */
+    public boolean canConstructWithGetOrDefault(String ransomNote, String magazine) {
+        Map<Character, Integer> charMap = new HashMap<>();
+
+        for (char c : magazine.toCharArray()) {
+            charMap.put(c, charMap.getOrDefault(c, 0) + 1);
+        }
+
+        for (char c : ransomNote.toCharArray()) {
             if (charMap.containsKey(c) && charMap.get(c) > 0) {
                 charMap.put(c, charMap.get(c) - 1);
             } else {
@@ -80,31 +106,6 @@ public class Q383RansomNoteTest {
      * <pre>
      * This is my 2nd fastest implementation.
      * Leetcode:
-     * - 15ms       - beats 26.28% of users with Java
-     * - 46.06MB    - beats 46.06%
-     * </pre>
-     */
-    public boolean canConstructWithGetOrDefault(String ransomNote, String magazine) {
-        Map<Character, Integer> charMap = new HashMap<>();
-
-        for (char c: magazine.toCharArray()) {
-            charMap.put(c, charMap.getOrDefault(c, 0) + 1);
-        }
-
-        for (char c: ransomNote.toCharArray()) {
-            if (charMap.containsKey(c) && charMap.get(c) > 0) {
-                charMap.put(c, charMap.get(c) - 1);
-            } else {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * <pre>
-     * This is my fastest implementation.
-     * Leetcode:
      * - 14ms       - beats 32.06% of users with Java
      * - 45.27MB    - beats 17.21%
      * </pre>
@@ -112,12 +113,12 @@ public class Q383RansomNoteTest {
     public boolean canConstructWithJava8MapMethods(String ransomNote, String magazine) {
         Map<Character, Integer> charMap = new HashMap<>();
 
-        for (char c: magazine.toCharArray()) {
-            charMap.computeIfPresent(c, (k,v) -> v+1);
+        for (char c : magazine.toCharArray()) {
+            charMap.computeIfPresent(c, (k, v) -> v + 1);
             charMap.putIfAbsent(c, 1);
         }
 
-        for (char c: ransomNote.toCharArray()) {
+        for (char c : ransomNote.toCharArray()) {
             if (charMap.containsKey(c) && charMap.get(c) > 0) {
                 charMap.put(c, charMap.get(c) - 1);
             } else {

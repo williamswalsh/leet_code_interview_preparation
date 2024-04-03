@@ -59,7 +59,42 @@ public class Q242AnagramFinderTest {
 
     /**
      * <pre>
-     * This is my fastest implementation.
+     * This is my fastest & smallest implementation.
+     * Leetcode:
+     * - 2/3ms        - beats 98.32% of users with Java
+     * - 42.99MB    - beats 79.16% of users with Java
+     * </pre>
+     */
+    public boolean isAnagramWithBytes(String s, String t) {
+//        this value must stay as int as there can be more than 127 instances of a letter.
+        int[] charCount = new int[26];
+
+        if (s.length() != t.length()) {
+            return false;
+        }
+        byte[] sChars = s.getBytes();
+        byte[] tChars = t.getBytes();
+
+        int i = 0;
+        while (i < sChars.length) {
+
+// NB: Changing from -97 to -'a' increases the runtime performance by 1 ms?
+            charCount[sChars[i] - 'a']++;
+            charCount[tChars[i] - 'a']--;
+            i++;
+        }
+
+        for (int val : charCount) {
+            if (val != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * <pre>
+     * This is my 3rd fastest implementation.
      * Leetcode:
      * - 4ms        - beats 75.21% of users with Java
      * - 43.98MB    - beats 60.77% of users with Java

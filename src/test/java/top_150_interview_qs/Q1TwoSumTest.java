@@ -45,22 +45,23 @@ public class Q1TwoSumTest {
         return new int[]{};
     }
 
-    //    Reuses the existing value
-//    like if its 3, 2, 4 t=6
-//    will give array indexes [0,0]
+    /**
+     * <pre>
+     * This is my hashmap implementation.
+     *
+     * Leetcode:
+     * - 3ms         - beats 68.04% of users with Java
+     * - 44.90MB     - beats 42.09% of users with Java
+     * </pre>
+     */
     public int[] twoSum(int[] nums, int target) {
-        Map<Integer, Integer> map = new HashMap<>(nums.length);
-
-
-        // put all values
-        for (int i = 0; i < nums.length; i++) {
-            map.put(nums[i], i);
-        }
+        Map<Integer, Integer> map = new HashMap<>();
 
         for (int i = 0; i < nums.length; i++) {
             if (map.containsKey(target - nums[i])) {
-                return new int[]{i, map.get(target - nums[i])};
+                return new int[]{map.get(target - nums[i]), i};
             }
+            map.put(nums[i], i);
         }
         return new int[]{};
     }

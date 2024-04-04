@@ -48,6 +48,9 @@ public class Q1TwoSumTest {
     /**
      * <pre>
      * This is my hashmap implementation.
+     * Runtime Complexity - O(n):
+     * - only iterate loop once looking for the inverse(complement) value.
+     * - inverse value = target - value >> =9-2=7
      *
      * Leetcode:
      * - 3ms         - beats 68.04% of users with Java

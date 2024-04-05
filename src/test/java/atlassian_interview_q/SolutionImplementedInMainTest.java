@@ -24,7 +24,7 @@ S = maximal length of each word or of the note
 */
 
 
-public class SolutionTest {
+public class SolutionImplementedInMainTest {
     private final String[] words = {"baby", "referee", "cat", "dada", "dog", "bird", "ax", "baz"};
 
     private char[] find(String[] words, char[] note) {

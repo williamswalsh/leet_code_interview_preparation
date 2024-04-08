@@ -3,9 +3,7 @@ package top_150_interview_qs;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,20 +23,44 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class Q202IsHappyTest {
 
-//    public boolean isHappyFirst(int n) {
-//        char[] digits = String.valueOf(n).toCharArray();
-//        int sum = 0;
-//        for (char digit: digits) {
-//            sum += digit^2;
-//        }
-//        if (sum == 1) {
-//            return true;
-//        } else if(alreadySeen) {
-//            return isHappy(sum);
-//        } else {
-//            return false;
-//        }
-//    }
+
+    /**
+     * <pre>
+     * This is my second implementation.
+     * NB: replacing the .chars().map().boxed.toList() with
+     * while(n!=0) {}
+     * Made it 8 times faster!!
+     *
+     * Leetcode:
+     * - 1ms         - beats 63.98% of users with Java
+     * - 40.88MB     - beats 27.48% of users with Java
+     * </pre>
+     */
+    public boolean isHappy(int n) {
+        Set<Integer> integerSet = new HashSet<>();
+
+        int sum;
+
+        while (true) {
+            sum = 0;
+
+            if (!integerSet.add(n)) {
+                return false;
+            }
+
+            // Way more efficient than chars().map().boxed.toList()
+            while (n != 0) {
+                int digit = n % 10;
+                sum += (digit * digit);
+                n /= 10;
+            }
+
+            if (sum == 1) {
+                return true;
+            }
+            n = sum;
+        }
+    }
 
 
     /**
@@ -50,10 +72,10 @@ public class Q202IsHappyTest {
      * - 42.54MB     - beats  5.19% of users with Java
      * </pre>
      */
-    public boolean isHappy(int n) {
+    public boolean isHappy2(int n) {
         Set<Integer> integerSet = new HashSet<>();
 
-        int sum = 0;
+        int sum;
 
         while (true) {
             sum = 0;
@@ -62,7 +84,7 @@ public class Q202IsHappyTest {
                 return false;
             }
 
-            for (Integer digit: String.valueOf(n).chars().map(Character::getNumericValue).boxed().toList()) {
+            for (Integer digit : String.valueOf(n).chars().map(Character::getNumericValue).boxed().toList()) {
                 sum += (digit * digit);
             }
 
@@ -74,14 +96,14 @@ public class Q202IsHappyTest {
     }
 
     /**
-     *  Example 1:
-     *  * Input: n = 19
-     *  * Output: true
-     *  * Explanation:
-     *  * 12 + 92 = 82
-     *  * 82 + 22 = 68
-     *  * 62 + 82 = 100
-     *  * 12 + 02 + 02 = 1]
+     * Example 1:
+     * Input: n = 19
+     * Output: true
+     * Explanation:
+     * 12 + 92 = 82
+     * 82 + 22 = 68
+     * 62 + 82 = 100
+     * 12 + 02 + 02 = 1]
      */
     @Test
     void isHappyEg1Test() {

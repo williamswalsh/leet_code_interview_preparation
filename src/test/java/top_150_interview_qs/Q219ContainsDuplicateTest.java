@@ -110,6 +110,11 @@ public class Q219ContainsDuplicateTest {
      */
     public boolean containsNearbyDuplicate(int[] nums, int k) {
 //    public boolean containsNearbyDuplicateWithHash(int[] nums, int k) {
+
+        if(nums == null || nums.length < 2 || k == 0) {
+            return false;
+        }
+
         HashSet<Integer> intSet = new HashSet<>();
         int j = 0;
         for (int num : nums) {

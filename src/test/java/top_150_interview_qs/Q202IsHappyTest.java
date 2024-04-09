@@ -36,11 +36,12 @@ public class Q202IsHappyTest {
      * - 40.88MB     - beats 27.48% of users with Java
      * </pre>
      */
-    public boolean isHappy(int n) {
+//    public boolean isHappy(int n) {
+    public boolean isHappyUsingSet(int n) {
         Set<Integer> integerSet = new HashSet<>();
 
         int sum;
-
+        int digit;
         while (true) {
             sum = 0;
 
@@ -50,8 +51,8 @@ public class Q202IsHappyTest {
 
             // Way more efficient than chars().map().boxed.toList()
             while (n != 0) {
-                int digit = n % 10;
-                sum += (digit * digit);
+                digit = n%10;
+                sum +=(digit*digit);
                 n /= 10;
             }
 
@@ -62,6 +63,37 @@ public class Q202IsHappyTest {
         }
     }
 
+
+
+    private int square(int n) {
+        int sum = 0;
+        int digit;
+
+        while (n > 0) {
+            digit = n%10;
+            sum +=(digit*digit);
+            n /= 10;
+        }
+        return sum;
+    }
+
+    // TWO POINTERS || FLOYD'S TORTOISE AND HARE || DETAILED EXPLANATION
+//    public boolean isHappyTortoiseAndHare(int n) {
+    public boolean isHappy(int n) {
+        int slow = n;
+        int fast = n;
+
+        do {
+            slow = square(slow);
+            fast = square(square(fast));
+
+            if (fast == 1) {
+                return true;
+            }
+        } while(slow != fast);
+
+        return slow == 1;
+    }
 
     /**
      * <pre>

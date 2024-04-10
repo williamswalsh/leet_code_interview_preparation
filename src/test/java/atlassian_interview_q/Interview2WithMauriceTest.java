@@ -18,19 +18,19 @@ public class Interview2WithMauriceTest {
     Pair mismatches(String[][] accessRecords) {
         Map<String, Boolean> employeeIsEntered = new HashMap<>();
         String employee;
-        boolean employeeAction;
+        boolean isEmployeeEntering;
 
         Set<String> missingExit = new HashSet<>();
         Set<String> missingEnter = new HashSet<>();
 
         for (String[] record : accessRecords) {
             employee = record[0];
-            employeeAction = record[1].equals("enter");
+            isEmployeeEntering = record[1].equals("enter");
 
 //                User in Map
             if (employeeIsEntered.containsKey(employee)) {
 
-                // employeeEntered & employeeAction
+                // employeeEntered & isEmployeeEntering
 //                          0           0           -> add to bad exit list
 //                          0           1           -> update map state to employeeEntered=true
 //                          1           0           -> update map state to employeeEntered=false
@@ -38,7 +38,7 @@ public class Interview2WithMauriceTest {
 
 //                Employee is already entered
                 if (employeeIsEntered.get(employee)) {
-                    if (employeeAction) {
+                    if (isEmployeeEntering) {
                         // add to bad enter list
                         missingExit.add(employee);
                         employeeIsEntered.put(employee, true);
@@ -48,7 +48,7 @@ public class Interview2WithMauriceTest {
                     }
                 } else {
                     // employee is not already entered
-                    if (employeeAction) {
+                    if (isEmployeeEntering) {
                         //update map state to employeeEntered=true
                         employeeIsEntered.put(employee, true);
                     } else {
@@ -59,10 +59,10 @@ public class Interview2WithMauriceTest {
                 }
             } else {
 //                User not in Map
-                if (!employeeAction) {
+                if (!isEmployeeEntering) {
                     missingEnter.add(employee);
                 }
-                employeeIsEntered.put(employee, employeeAction);
+                employeeIsEntered.put(employee, isEmployeeEntering);
             }
 
         }

@@ -2,6 +2,7 @@ package top_150_interview_qs;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import static java.lang.Math.abs;
@@ -33,7 +34,7 @@ public class Q219ContainsDuplicateTest {
     public boolean containsNearbyDuplicateBruteForce(int[] nums, int k) {
         for (int i = 0; i < nums.length; i++) {
             for (int j = i + 1; j < nums.length; j++) {
-                if(nums[i] == nums[j] && abs(i - j) <= k) {
+                if (nums[i] == nums[j] && abs(i - j) <= k) {
                     return true;
                 }
             }
@@ -46,6 +47,7 @@ public class Q219ContainsDuplicateTest {
     // the nearby criteria is the upper limit for the inner loop j.
     // Calculate indexes that meet the criteria first abs(i - j) <= k
     // Only iterate through those indexes
+
     /**
      * <pre>
      * This is my second implementation.
@@ -58,7 +60,7 @@ public class Q219ContainsDuplicateTest {
     public boolean containsNearbyDuplicateStillBruteForce(int[] nums, int k) {
         for (int i = 0; i < nums.length; i++) {
             for (int j = i + 1; abs(i - j) <= k && j < nums.length; j++) {
-                if(nums[i] == nums[j]) {
+                if (nums[i] == nums[j]) {
                     return true;
                 }
             }
@@ -76,18 +78,18 @@ public class Q219ContainsDuplicateTest {
      * </pre>
      */
     public boolean containsNearbyDuplicateCaseWhereKIsTooBig(int[] nums, int k) {
-        if(k>=nums.length) {
-            for (int i = 0; i < nums.length-1; i++) {
+        if (k >= nums.length) {
+            for (int i = 0; i < nums.length - 1; i++) {
                 for (int j = i + 1; j < nums.length; j++) {
-                    if(nums[i] == nums[j]) {
+                    if (nums[i] == nums[j]) {
                         return true;
                     }
                 }
             }
         } else {
-            for (int i = 0; i < nums.length -1; i++) {
+            for (int i = 0; i < nums.length - 1; i++) {
                 for (int j = i + 1; abs(i - j) <= k && j < nums.length; j++) {
-                    if(nums[i] == nums[j]) {
+                    if (nums[i] == nums[j]) {
                         return true;
                     }
                 }
@@ -108,10 +110,10 @@ public class Q219ContainsDuplicateTest {
      * - 57.15MB   - beats 49.89% of users with Java
      * </pre>
      */
-    public boolean containsNearbyDuplicate(int[] nums, int k) {
-//    public boolean containsNearbyDuplicateWithHash(int[] nums, int k) {
+//    public boolean containsNearbyDuplicate(int[] nums, int k) {
+    public boolean containsNearbyDuplicateWithHash(int[] nums, int k) {
 
-        if(nums == null || nums.length < 2 || k == 0) {
+        if (nums == null || nums.length < 2 || k == 0) {
             return false;
         }
 
@@ -154,16 +156,51 @@ public class Q219ContainsDuplicateTest {
         return false;
     }
 
+    /**
+     * <pre>
+     * This is my sixth implementation.
+     * Using a hashmap to map the integer values to index positions.
+     * If a number is added twice >> check if the indexes are within the valid range.
+     * No sliding window in this approach.
+     *
+     * Leetcode:
+     * - 19ms      - beats 57.35% of users with Java
+     * - 57.30MB   - beats 47.98% of users with Java
+     * </pre>
+     */
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+//    public boolean containsNearbyDuplicateHashMapApproach(int[] nums, int k) {
+        int i, newIndex, oldIndex, diff;
+
+        HashMap<Integer, Integer> valIndexMap = new HashMap<>();
+        for (i = 0; i < nums.length; i++) {
+            if (!valIndexMap.containsKey(nums[i])) {
+                valIndexMap.put(nums[i], i);
+            } else {
+                oldIndex = valIndexMap.get(nums[i]);
+                newIndex = i;
+                diff = newIndex - oldIndex;
+
+                if (diff <= k) {
+                    return true;
+                } else {
+                    valIndexMap.put(nums[i], newIndex);
+                }
+            }
+        }
+        return false;
+    }
+
     @Test
     void testEg1() {
-        int[] nums = {1,2,3,1};
+        int[] nums = {1, 2, 3, 1};
         int k = 3;
         assertTrue(containsNearbyDuplicate(nums, k));
     }
 
     @Test
     void testEg2() {
-        int[] nums = {1,0,1,1};
+        int[] nums = {1, 0, 1, 1};
         int k = 1;
         assertTrue(containsNearbyDuplicate(nums, k));
 
@@ -171,7 +208,7 @@ public class Q219ContainsDuplicateTest {
 
     @Test
     void testEg3() {
-        int[] nums = {1,2,3,1,2,3};
+        int[] nums = {1, 2, 3, 1, 2, 3};
         int k = 2;
         assertFalse(containsNearbyDuplicate(nums, k));
     }

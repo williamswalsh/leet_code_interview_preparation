@@ -31,7 +31,7 @@ public class InnerClassTest {
         }
     }
 
-//    Not tied to an object of the outer class.
+//    Not tied to an object of the outer class.???
     public static class NestedStaticClass {
         int x;
 
